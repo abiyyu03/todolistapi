@@ -14,5 +14,18 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    dd(DB::getPDO());
 });
+//activity_groups
+$router->get('activity-groups','ActivityGroupController@getAll');
+$router->post('activity-groups','ActivityGroupController@create');
+$router->get('activity-groups/{id}','ActivityGroupController@getOne'); 
+$router->delete('activity-groups/{id}','ActivityGroupController@delete');
+$router->patch('activity-groups/{id}','ActivityGroupController@update');
+
+//todo-items
+$router->get('todo-items','TodoItemController@getAll');
+$router->post('todo-items','TodoItemController@create');
+$router->get('todo-items/{id}','TodoItemController@getOne'); 
+$router->delete('todo-items/{id}','TodoItemController@delete');
+$router->patch('todo-items/{id}','TodoItemController@update');

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple chatbox</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 10px;
+        }
+        body{
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1%;
+            width: 40%;
+            height: 70%;
+            background-color: #1974d2;
+            border: 1px solid black;
+            border-radius: 2%;
+        }
+
+        .chatbox {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 85%;
+            padding: 1%;
+            background-color: white;
+            overflow-y: scroll;
+        }
+
+        .chat-send {
+            align-self: flex-end;
+            background-color: blue;
+            color: white;
+            font-weight: bold;
+            border-radius: 3px;
+            max-width: 80%;
+            height: auto;
+            padding: 1%;
+            margin-top: 5px;
+        }
+        .chat-received {
+            align-self: flex-start;
+            background-color: lightblue;
+            color: black;
+            font-weight: bold;
+            border-radius: 3px;
+            max-width: 80%;
+            height: auto;
+            padding: 1%;
+            margin-top: 5px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: row;
+            height: 10%;
+        }
+
+        .message input {
+            border: none;
+            width: 70%;
+        }
+
+        .message input:focus {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .message button {
+            width: 30%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div id="chat-a" class="chatbox">
+        </div>
+        <div class="message">
+            <input id="message-a" type="text" onkeypress="checkKey(event, 'a')">
+            <button id="send" onclick="send('a')">Kirim</button>
+        </div>
+    </div>
+    <div class="app">
+        <div id="chat-b" class="chatbox">
+        </div>
+        <div class="message">
+            <input id="message-b" type="text" onkeypress="checkKey(event, 'b')">
+            <button id="send" onclick="send('b')">Kirim</button>
+        </div>
+    </div>
+    <script>
+        function send(sender) {
+            let receiver = '';
+            if (sender == 'a'){
+                receiver = 'b';
+            }else{
+                receiver = 'a';
+            }
+            let sender_chatbox = document.getElementById("chat-"+sender);
+            let receiver_chatbox = document.getElementById("chat-"+receiver);
+            let message = document.getElementById("message-"+sender);
+            let text_send = document.createTextNode(message.value)
+            let text_receive = document.createTextNode(message.value)
+
+            let sender_chat = document.createElement("div");
+            sender_chat.classList.add("chat-send");
+            sender_chat.appendChild(text_send);
+
+            let receiver_chat = document.createElement("div");
+            receiver_chat.classList.add("chat-received");
+            receiver_chat.appendChild(text_receive)
+
+            sender_chatbox.appendChild(sender_chat);
+            sender_chatbox.scrollTop = sender_chatbox.scrollHeight;
+
+            receiver_chatbox.appendChild(receiver_chat);
+            receiver_chatbox.scrollTop = receiver_chatbox.scrollHeight;
+        
+            message.value = "";
+        }
+
+        function checkKey(event, sender) {
+            let key = event.keyCode
+            if (key == 13) {
+                send(sender)
+            }
+        }
+    </script>
+</body>
+
+</html> 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity_group extends Model
 {
-    protected $table = "todo_items";
+    protected $table = "activity_groups";
     /**
      * The attributes that are mass assignable.
      *
@@ -15,4 +15,9 @@ class Activity_group extends Model
     protected $fillable = [
         'email','title'
     ]; 
+
+    public function todo_item()
+    {
+        return $this->hasMany('App\Models\Todo_item');
+    }
 }

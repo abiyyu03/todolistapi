@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model; 
+use Mehradsadeghi\FilterQueryString\FilterQueryString;
 
 class Todo_item extends Model
 {
@@ -17,12 +18,8 @@ class Todo_item extends Model
         'activity_group_id', 'title','is_active','priority'
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
+    public function activity_group()
+    {
+        return $this->belongsTo('App\Models\Activity_group');
+    }
 }
