@@ -10,4 +10,4 @@ COPY . .
 
 RUN composer install
 
-RUN php -S localhost:3030 -t public
+# RUN php -S localhost:3030 -t public

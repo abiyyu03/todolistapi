@@ -1,4 +1,4 @@
-# /vendor
+/vendor
 /.idea
 /database/mysql-data
 Homestead.json

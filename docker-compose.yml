@@ -1,34 +1,41 @@
-# version: '3.5'
+version: "3.5"
 
-# services: 
-#   lumen: 
-#     ports:
-#       - "3030:8090" 
-#     volumes:
-#       - .:/var/www/html/
-#       - /var/www/html/vendor/
-#     build: .
-#     command: php -S lumen:8090 -t public 
-#     restart: always
-#     depends_on:
-#       - db
-#   db: 
-#     image: mysql:5.7
-#     container_name: mysql
-#     restart: always
-#     environment:
-#       - MYSQL_USER=${DB_USERNAME}
-#       - MYSQL_DATABASE=${DB_DATABASE}
-#       - MYSQL_PASSWORD=${DB_PASSWORD}
-#       - MYSQL_ROOT_PASSWORD=my_secret_pw
-#     command: --default-authentication-plugin=mysql_native_password
-#     volumes: 
-#       - ./database/mysql-data:/var/lib/mysql:rw
-# volumes:
-#   mysql-data:
+services: 
 
-#     # adminer:
-#     # image: adminer
-#     # restart: always
-#     # ports:
-#     #   - 8080:8080
+  mysql:
+    image: mysql:5.7
+    ports: 
+      - "3306:3307"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    command: mysql --default-authentication-plugin=mysql_native_password
+    volumes: 
+      - ./database/initialize_abiyyu_cakra.sql:/docker-entrypoint-initdb.d/setup.sql
+    networks:
+      - api-network
+
+  lumen:
+    ports:
+      - "3030:3030"
+    volumes: 
+      - .:/var/www/html
+      - /var/www/html/vendor
+    build: .
+    environment:
+      # DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MEMCACHED_HOST: cache
+    command: php -S localhost:3030 -t public
+    restart: always
+    networks:
+      - api-network
+    depends_on:
+      - mysql
+  
+networks:
+  api-network:
+    name: api-network
